@@ -1,11 +1,12 @@
 const express = require('express');
 const router = express.Router();
-//const cache = require('express-redis-cache')({ prefix: 'ht-events', expire: 60 });
+const { client } = require('../scripts/redisClient');
+const cache = require('express-redis-cache')({ client: client, prefix: 'ht-events', expire: 60 });
 const { calendar } = require('@googleapis/calendar');
 const { HuskythonEvent } = require("../scripts/api");
 
 router.get('/events',
-    //cache.route(),
+    cache.route(),
     async function(req, res) {
     try {
         return res.send(await getEventsList());
