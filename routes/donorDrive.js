@@ -44,12 +44,16 @@ router.get('/participants/leaderboard',
     cache.route(),
     async function(req, res) {
         try {
+            const headersResponse = await axios.get(`${process.env.DONOR_DRIVE_URL}/index.cfm?fuseaction=donordrive.participantList&eventID=${process.env.HUSKYTHON_EVENT_ID}`);
             const response = await axios.get(`${process.env.DONOR_DRIVE_URL}/api/events/${process.env.HUSKYTHON_EVENT_ID}/participants`,
                 {
                     params: {
                         select: "avatarImageURL,campaignName,displayName,eventID,eventName,fundraisingGoal,participantID,sumDonations,teamID,teamName",
                         orderBy: "sumDonations DESC,displayName ASC",
                         limit: "10"
+                    },
+                    headers: {
+                        cookie: headersResponse.headers["set-cookie"]
                     }
                 }
             );
@@ -146,11 +150,15 @@ router.get('/teams/leaderboard',
     cache.route(),
     async function(req, res) {
         try {
+            const headersResponse = await axios.get(`${process.env.DONOR_DRIVE_URL}/index.cfm?fuseaction=donordrive.participantList&eventID=${process.env.HUSKYTHON_EVENT_ID}`);
             const response = await axios.get(`${process.env.DONOR_DRIVE_URL}/api/events/${process.env.HUSKYTHON_EVENT_ID}/teams`, {
                 params: {
                     select: "avatarImageURL,eventID,eventName,fundraisingGoal,name,sumDonations,teamID",
                     orderBy: "sumDonations DESC,name ASC",
                     limit: "10"
+                },
+                headers: {
+                    cookie: headersResponse.headers["set-cookie"]
                 }
             });
 
