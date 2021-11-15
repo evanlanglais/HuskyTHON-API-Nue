@@ -1,9 +1,12 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
+const fs = require('fs');
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+router.get('/fundraisinginitiatives', function(req, res) {
+  res.contentType("application/pdf");
+  const data = fs.readFileSync('./public/pdfs/fundraising_initiatives.pdf');
+  res.send(data);
+  res.end();
 });
 
 module.exports = router;
