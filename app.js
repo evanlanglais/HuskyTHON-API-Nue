@@ -19,4 +19,9 @@ app.use('/', indexRouter);
 app.use('/api', donorDriveRouter);
 app.use('/api', eventsRouter);
 
+app.get('/health', function (req, res) {
+    res.status(200);
+    res.send();
+})
+
 module.exports = app;
