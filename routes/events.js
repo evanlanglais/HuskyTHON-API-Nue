@@ -5,6 +5,15 @@ const cache = require('express-redis-cache')({ client: client, prefix: 'ht-event
 const { calendar } = require('@googleapis/calendar');
 const { HuskythonEvent } = require("../scripts/api");
 
+router.get('/main-event',
+    cache.route(),
+    function (req, res){
+        return res.send({
+            dateAsString: process.env.MAIN_EVENT_DATE
+        });
+    }
+);
+
 router.get('/events',
     cache.route(),
     async function(req, res) {
