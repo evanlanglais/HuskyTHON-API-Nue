@@ -40,7 +40,7 @@ async function getEventsList() {
         const startDateString = isAllDayEvent ? event.start.date : event.start.dateTime;
         const endDateString = isAllDayEvent ? event.end.date : event.end.dateTime;
 
-        if (DateTime.fromISO(endDateString, {zone: tz}) < DateTime.now())
+        if (DateTime.fromISO(endDateString, {zone: tz}) < DateTime.now().minus({months: 6}))
         {
             continue;
         }
