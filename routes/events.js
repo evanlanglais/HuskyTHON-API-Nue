@@ -3,6 +3,7 @@ const router = express.Router();
 const { client } = require('../scripts/redisClient');
 const cache = require('express-redis-cache')({ client: client, prefix: 'ht-events', expire: 60 });
 const { calendar } = require('@googleapis/calendar');
+const { DateTime } = require("luxon");
 const { HuskythonEvent } = require("../scripts/api");
 
 router.get('/main-event',
@@ -38,9 +39,17 @@ async function getEventsList() {
         const isAllDayEvent = !!event.start.date;
         const startDateString = isAllDayEvent ? event.start.date : event.start.dateTime;
         const endDateString = isAllDayEvent ? event.end.date : event.end.dateTime;
+
+        if (DateTime.fromISO(endDateString, {zone: tz}) < DateTime.now())
+        {
+            continue;
+        }
+
         const htEvent = HuskythonEvent(event.id, event.summary, startDateString, endDateString, isAllDayEvent, tz, event.location, event.htmlLink);
         eventsList.push(htEvent);
     }
+
+    eventsList.sort((htEvent1, htEvent2) => DateTime.fromISO(htEvent1.start) - DateTime.fromISO(htEvent2.start));
 
     return eventsList;
 }
