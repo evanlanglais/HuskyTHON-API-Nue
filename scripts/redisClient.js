@@ -1,4 +1,12 @@
 const redis = require('redis');
-const client = redis.createClient(6380, process.env.CACHE_HOSTNAME, {auth_pass: process.env.CACHE_KEY, tls: {servername: process.env.CACHE_HOSTNAME}});
+
+const useTLS = process.env.REDIS_TLS === 'true';
+const port = parseInt(process.env.CACHE_PORT || (useTLS ? '6380' : '6379'));
+
+const options = {};
+if (process.env.CACHE_KEY) options.auth_pass = process.env.CACHE_KEY;
+if (useTLS) options.tls = { servername: process.env.CACHE_HOSTNAME };
+
+const client = redis.createClient(port, process.env.CACHE_HOSTNAME, options);
 
 module.exports = {client};
