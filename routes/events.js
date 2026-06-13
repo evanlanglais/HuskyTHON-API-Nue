@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { client } = require('../scripts/redisClient');
-const cache = require('express-redis-cache')({ client: client, prefix: 'ht-events', expire: 60 });
+const cache = require('express-redis-cache')({ client: client, prefix: 'ht-events', expire: 300 });
 const { calendar } = require('@googleapis/calendar');
 const { DateTime } = require("luxon");
 const { HuskythonEvent } = require("../scripts/api");

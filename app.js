@@ -72,5 +72,16 @@ if (require.main === module) {
     const addr = server.address();
     const bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port;
     console.log('Listening on ' + bind);
+
+    // Keep a shared DonorDrive auth cookie warm so request handlers never block to
+    // acquire one (see scripts/donorDriveCookie.js). Started here, not at module load,
+    // so test imports of ./app don't spin up timers or hit DonorDrive.
+    require('./scripts/donorDriveCookie').startCookiePrimer();
+
+    // Keep the leaderboard cache entries warm by periodically hitting our own leaderboard
+    // endpoints, so client requests are always served from cache (see scripts/leaderboardPrimer.js).
+    if (addr && typeof addr === 'object') {
+      require('./scripts/leaderboardPrimer').startLeaderboardPrimer(addr.port);
+    }
   }
 }
