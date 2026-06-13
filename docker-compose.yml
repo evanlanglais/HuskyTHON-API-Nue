@@ -1,8 +1,8 @@
 services:
   api:
     build: .
-    expose:
-      - "3000"
+    ports:
+      - "127.0.0.1:3001:3000"
     environment:
       - CACHE_HOSTNAME=redis
       - CACHE_PORT=6379
@@ -34,19 +34,6 @@ services:
     networks:
       - web
 
-  cloudflared:
-    image: cloudflare/cloudflared:latest
-    command: tunnel --no-autoupdate run
-    environment:
-      - TUNNEL_TOKEN=${CLOUDFLARE_TUNNEL_TOKEN}
-    depends_on:
-      api:
-        condition: service_healthy
-    restart: unless-stopped
-    networks:
-      - web
-
 networks:
   web:
     driver: bridge
-    enable_ipv6: true
