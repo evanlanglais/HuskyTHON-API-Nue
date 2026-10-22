@@ -46,7 +46,7 @@ router.get('/participants/search',
             // Search/leaderboard are locked behind a session cookie; getCookie() supplies a
             // shared, primed one (see scripts/donorDriveCookie.js) instead of fetching per request.
             const response = await authedGet(
-                `${process.env.DONOR_DRIVE_URL}/api/events/${process.env.HUSKYTHON_EVENT_ID}/participants`,
+                `${process.env.DONOR_DRIVE_URL}/api/1.1/events/${process.env.HUSKYTHON_EVENT_ID}/participants`,
                 {
                     select: "avatarImageURL,campaignName,displayName,participantID,fundraisingGoal,sumDonations,teamID,teamName",
                     where: `displayName LIKE '%${req.query.q}%'`,
@@ -70,7 +70,7 @@ router.get('/participants/leaderboard',
         // this handler only runs on a cache miss.
         try {
             const response = await authedGet(
-                `${process.env.DONOR_DRIVE_URL}/api/events/${process.env.HUSKYTHON_EVENT_ID}/participants`,
+                `${process.env.DONOR_DRIVE_URL}/api/1.1/events/${process.env.HUSKYTHON_EVENT_ID}/participants`,
                 {
                     select: "avatarImageURL,campaignName,displayName,eventID,eventName,fundraisingGoal,participantID,sumDonations,teamID,teamName",
                     orderBy: "sumDonations DESC,displayName ASC",
@@ -94,7 +94,7 @@ router.get('/participants/:id',
     cache.route(),
     async function(req, res) {
         try {
-            const response = await axios.get(`${process.env.DONOR_DRIVE_URL}/api/participants/${req.params.id}`, {
+            const response = await axios.get(`${process.env.DONOR_DRIVE_URL}/api/1.1/participants/${req.params.id}`, {
                 params: {
                     limit: "1"
                 }
@@ -116,7 +116,7 @@ router.get('/participants/:id/donations',
     cache.route(),
     async function(req, res) {
         try {
-            const response = await axios.get(`${process.env.DONOR_DRIVE_URL}/api/participants/${req.params.id}/donations`, {
+            const response = await axios.get(`${process.env.DONOR_DRIVE_URL}/api/1.1/participants/${req.params.id}/donations`, {
                 params: {
                     select: "displayName,message,amount,createdDateUTC",
                     orderBy: "createdDateUTC DESC"
@@ -143,7 +143,7 @@ router.get('/teams/search',
             // Search/leaderboard are locked behind a session cookie; getCookie() supplies a
             // shared, primed one (see scripts/donorDriveCookie.js) instead of fetching per request.
             const response = await authedGet(
-                `${process.env.DONOR_DRIVE_URL}/api/events/${process.env.HUSKYTHON_EVENT_ID}/teams`,
+                `${process.env.DONOR_DRIVE_URL}/api/1.1/events/${process.env.HUSKYTHON_EVENT_ID}/teams`,
                 {
                     select: "avatarImageURL,name,teamID",
                     where: `name LIKE '%${req.query.q}%'`,
@@ -166,7 +166,7 @@ router.get('/teams/leaderboard',
         // Served from the warm cache when primed; handler runs only on a cache miss.
         try {
             const response = await authedGet(
-                `${process.env.DONOR_DRIVE_URL}/api/events/${process.env.HUSKYTHON_EVENT_ID}/teams`,
+                `${process.env.DONOR_DRIVE_URL}/api/1.1/events/${process.env.HUSKYTHON_EVENT_ID}/teams`,
                 {
                     select: "avatarImageURL,eventID,eventName,fundraisingGoal,name,sumDonations,teamID",
                     orderBy: "sumDonations DESC,name ASC",
@@ -190,7 +190,7 @@ router.get('/teams/:id',
     cache.route(),
     async function(req, res) {
         try {
-            const response = await axios.get(`${process.env.DONOR_DRIVE_URL}/api/teams/${req.params.id}`, {
+            const response = await axios.get(`${process.env.DONOR_DRIVE_URL}/api/1.1/teams/${req.params.id}`, {
                 params: {
                     limit: "1"
                 }
@@ -212,7 +212,7 @@ router.get('/teams/:id/participants',
     cache.route(),
     async function(req, res) {
         try {
-            const response = await axios.get(`${process.env.DONOR_DRIVE_URL}/api/teams/${req.params.id}/participants`, {
+            const response = await axios.get(`${process.env.DONOR_DRIVE_URL}/api/1.1/teams/${req.params.id}/participants`, {
                 params: {
                     select: "displayName,participantID,sumDonations",
                     orderBy: "sumDonations DESC,displayName ASC"
