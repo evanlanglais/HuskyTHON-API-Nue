@@ -48,7 +48,7 @@ router.get('/participants/search',
             const response = await authedGet(
                 `${process.env.DONOR_DRIVE_URL}/api/1.1/events/${process.env.HUSKYTHON_EVENT_ID}/participants`,
                 {
-                    select: "avatarImageURL,campaignName,displayName,participantID,fundraisingGoal,sumDonations,teamID,teamName",
+                    //select: "avatarImageURL,campaignName,displayName,participantID,fundraisingGoal,sumDonations,teamID,teamName",
                     where: `displayName LIKE '%${req.query.q}%'`,
                     orderBy: "displayName ASC",
                     limit: "5"
@@ -72,7 +72,8 @@ router.get('/participants/leaderboard',
             const response = await authedGet(
                 `${process.env.DONOR_DRIVE_URL}/api/1.1/events/${process.env.HUSKYTHON_EVENT_ID}/participants`,
                 {
-                    select: "avatarImageURL,campaignName,displayName,eventID,eventName,fundraisingGoal,participantID,sumDonations,teamID,teamName",
+                    where: "",
+                    //select: "avatarImageURL,campaignName,displayName,eventID,eventName,fundraisingGoal,participantID,sumDonations,teamID,teamName",
                     orderBy: "sumDonations DESC,displayName ASC",
                     limit: "10"
                 }
@@ -118,7 +119,7 @@ router.get('/participants/:id/donations',
         try {
             const response = await axios.get(`${process.env.DONOR_DRIVE_URL}/api/1.1/participants/${req.params.id}/donations`, {
                 params: {
-                    select: "displayName,message,amount,createdDateUTC",
+                    //select: "displayName,message,amount,createdDateUTC",
                     orderBy: "createdDateUTC DESC"
                 }
             });
@@ -145,7 +146,7 @@ router.get('/teams/search',
             const response = await authedGet(
                 `${process.env.DONOR_DRIVE_URL}/api/1.1/events/${process.env.HUSKYTHON_EVENT_ID}/teams`,
                 {
-                    select: "avatarImageURL,name,teamID",
+                    //select: "avatarImageURL,name,teamID",
                     where: `name LIKE '%${req.query.q}%'`,
                     orderBy: "name ASC",
                     limit: "5"
@@ -168,7 +169,8 @@ router.get('/teams/leaderboard',
             const response = await authedGet(
                 `${process.env.DONOR_DRIVE_URL}/api/1.1/events/${process.env.HUSKYTHON_EVENT_ID}/teams`,
                 {
-                    select: "avatarImageURL,eventID,eventName,fundraisingGoal,name,sumDonations,teamID",
+                    where: "",
+                    //select: "avatarImageURL,eventID,eventName,fundraisingGoal,name,sumDonations,teamID",
                     orderBy: "sumDonations DESC,name ASC",
                     limit: "10"
                 }
@@ -214,7 +216,7 @@ router.get('/teams/:id/participants',
         try {
             const response = await axios.get(`${process.env.DONOR_DRIVE_URL}/api/1.1/teams/${req.params.id}/participants`, {
                 params: {
-                    select: "displayName,participantID,sumDonations",
+                    //select: "displayName,participantID,sumDonations",
                     orderBy: "sumDonations DESC,displayName ASC"
                 }
             });
